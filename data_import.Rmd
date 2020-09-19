@@ -59,3 +59,7 @@ pulse_df <- read_sas("./data/public_pulse_data.sas7bdat")
 pulse_df
 ```
 
+## Comparison with Base R
+
+What about 'read.csv' ?
+It's built in r, but never use it!!!!
