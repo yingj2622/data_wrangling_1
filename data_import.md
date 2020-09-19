@@ -207,3 +207,11 @@ pulse_df
 ## Comparison with Base R
 
 What about ‘read.csv’ ? It’s built in r, but never use it\!\!\!\!
+
+## Exporting dataset
+
+Export the mlb sub-table.
+
+``` r
+write_csv(mlb_df,"./data/mlb_subtable.csv")
+```
