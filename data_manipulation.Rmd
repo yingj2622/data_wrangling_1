@@ -103,3 +103,15 @@ mutate(
 )
 ```
 
+## Arrange
+
+```{r}
+arrange(litters_df,pups_born_alive)
+```
+
+If you out more than one column into arrange function, it'll arrange the 1st column, and then arrange the 2nd, ...
+
+```{r}
+arrange(litters_df,pups_born_alive,gd0_weight)
+```
+
