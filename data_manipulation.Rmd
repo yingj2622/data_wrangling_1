@@ -61,3 +61,35 @@ Rename columns withoutselecting them
 rename(litters_df,GROUP = group, LITTER_NumBer = litter_number)
 ```
 
+## Filter
+
+Filter is intended to remove or keep rows. TRUE -> keep, FALSE -> remove
+
+```{r}
+filter(litters_df, gd0_weight <22)
+```
+
+```{r}
+filter(litters_df,gd0_weight >= 22)
+```
+
+```{r}
+filter(litters_df,gd_of_birth == 20)
+```
+
+```{r}
+filter(litters_df,gd_of_birth != 20)
+```
+
+```{r}
+filter(litters_df,gd0_weight >= 22,gd_of_birth == 20)
+```
+
+```{r}
+filter(litters_df,group == "Con7")
+```
+
+```{r}
+filter(litters_df,group %in% c("Con7","Mod8"))
+```
+
