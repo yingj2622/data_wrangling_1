@@ -1,137 +1,48 @@
 ---
-title: "Data Manipulation"
+title: "Tidy Data"
 output: github_document
 ---
 
 ```{r setup}
 library(tidyverse)
 ```
-## Load in the FAS litters Data
+
+## povit_longer
+
+Load the PULSE data,
 
 ```{r}
-litters_df <- read_csv("./data/FAS_litters.csv")
-litters_df <- janitor::clean_names(litters_df)
+pulse_data = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names()
 ```
 
-## Select
-
-Choose some of the columns and not others
+Wide format to long format
 
 ```{r}
-select(litters_df,group,gd0_weight)
+pulse_data_tidy = 
+  pulse_data %>%
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    names_prefix = "bdi_score_",
+    values_to = "bdi"
+  )
 ```
 
-```{r}
-select(litters_df,group,gd0_weight:gd_of_birth)
-```
+Rewrite, combine and extend(to add a mutate)
 
 ```{r}
-select(litters_df,-litter_number)
-```
-
-select and rename columns:
-
-```{r}
-select(litters_df,GROUP = group, LITTER_NUMBER = litter_number)
-```
-
-Select helpers
-
-```{r}
-select(litters_df,starts_with("gd"))
-```
-
-Make tibble start with a specific column
-
-```{r}
-select(litters_df,litter_number,everything())
-```
-
-Same as above
-
-```{r}
-relocate(litters_df,litter_number)
-```
-
-## Rename
-
-Rename columns withoutselecting them
-
-```{r}
-rename(litters_df,GROUP = group, LITTER_NumBer = litter_number)
-```
-
-## Filter
-
-Filter is intended to remove or keep rows. TRUE -> keep, FALSE -> remove
-
-```{r}
-filter(litters_df, gd0_weight <22)
-```
-
-```{r}
-filter(litters_df,gd0_weight >= 22)
-```
-
-```{r}
-filter(litters_df,gd_of_birth == 20)
-```
-
-```{r}
-filter(litters_df,gd_of_birth != 20)
-```
-
-```{r}
-filter(litters_df,gd0_weight >= 22,gd_of_birth == 20)
-```
-
-```{r}
-filter(litters_df,group == "Con7")
-```
-
-```{r}
-filter(litters_df,group %in% c("Con7","Mod8"))
-```
-
-## Mutate
-
-```{r}
-mutate(
-  litters_df,
-  wt_gain = gd18_weight - gd0_weight,
-  group = str_to_lower(group)
-)
-```
-
-## Arrange
-
-```{r}
-arrange(litters_df,pups_born_alive)
-```
-
-If you out more than one column into arrange function, it'll arrange the 1st column, and then arrange the 2nd, ...
-
-```{r}
-arrange(litters_df,pups_born_alive,gd0_weight)
-```
-
-## %>%
-
-```{r}
-litters_data_raw <- read_csv("./data/FAS_litters.csv")
-litters_clean_name <- janitor::clean_names(litters_data_raw)
-litters_data_selected <- select(litters_clean_name,-pups_survive)
-litters_mutated <- mutate(litters_data_selected,wt_gain = gd18_weight - gd0_weight)
-litters_without_missing <- drop_na(litters_mutated,gd0_weight)
-```
-
-Use the pipe operator instead
-
-```{r}
-litters_data_raw <- read_csv("./data/FAS_litters.csv") %>%
-  janitor::clean_names()%>%
-  select(-pups_survive)%>%
-  mutate(wt_gain = gd18_weight - gd0_weight)%>%
-  drop_na(gd0_weight)
+pulse_data = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    names_prefix = "bdi_score_",
+    values_to = "bdi"
+  ) %>% 
+  relocate(id,visit) %>% 
+  mutate(visit = recode(visit,"bl" = "oom"))
 ```
 
