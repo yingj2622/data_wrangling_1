@@ -123,3 +123,16 @@ fas_df =
   relocate(litter_number,sex,does,day_of_tx)
 ```
 
+## learning assessment
+
+```{r}
+survey_os_data <- read_csv("./data/survey_results/surv_os.csv") %>% 
+  rename("uni" = "What is your UNI?","os" = "What operating system do you use?") %>% 
+  mutate()
+
+survey_program_git_data <- read_csv("./data/survey_results/surv_program_git.csv") %>% 
+  rename("uni" = "What is your UNI?","degree" = "What is your degree program?","experience_with_git" = "Which most accurately describes your experience with Git?")
+
+survey_data <- left_join(survey_os_data,survey_program_git_data,by = "uni")  
+```
+

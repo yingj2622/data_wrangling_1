@@ -5,14 +5,14 @@ Tidy Data
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ------------------------------ tidyverse 1.3.0 --
+    ## -- Attaching packages -------------------------------------- tidyverse 1.3.0 --
 
     ## √ ggplot2 3.3.2     √ purrr   0.3.4
     ## √ tibble  3.0.3     √ dplyr   1.0.2
     ## √ tidyr   1.1.2     √ stringr 1.4.0
     ## √ readr   1.3.1     √ forcats 0.5.0
 
-    ## -- Conflicts --------------------------------- tidyverse_conflicts() --
+    ## -- Conflicts ----------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -181,4 +181,34 @@ fas_df =
   left_join(pups_df,litters_df,by = "litter_number") %>% 
   arrange(litter_number) %>% 
   relocate(litter_number,sex,does,day_of_tx)
+```
+
+## learning assessment
+
+``` r
+survey_os_data <- read_csv("./data/survey_results/surv_os.csv") %>% 
+  rename("uni" = "What is your UNI?","os" = "What operating system do you use?") %>% 
+  mutate()
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   `What is your UNI?` = col_character(),
+    ##   `What operating system do you use?` = col_character()
+    ## )
+
+``` r
+survey_program_git_data <- read_csv("./data/survey_results/surv_program_git.csv") %>% 
+  rename("uni" = "What is your UNI?","degree" = "What is your degree program?","experience_with_git" = "Which most accurately describes your experience with Git?")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   `What is your UNI?` = col_character(),
+    ##   `What is your degree program?` = col_character(),
+    ##   `Which most accurately describes your experience with Git?` = col_character()
+    ## )
+
+``` r
+survey_data <- left_join(survey_os_data,survey_program_git_data,by = "uni")  
 ```
